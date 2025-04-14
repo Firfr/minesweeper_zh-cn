@@ -17,7 +17,6 @@ Welcome to Minesweeper! This project is a browser-based implementation of the cl
 1. **Objective**: Clear the board without triggering any mines.
 2. **Controls**:
    - Click a cell to reveal it.
-   - Long press (on touch devices) or right-click (on desktop) to toggle a flag on a cell.
 3. **Winning**: Reveal all safe cells to win the game.
 4. **Losing**: Clicking on a mine will end the game.
 
