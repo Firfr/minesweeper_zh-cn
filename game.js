@@ -12,6 +12,7 @@ function createBoard(size, mines) {
             revealed: false,
             isMine: false,
             adjacentMines: 0,
+            flagged: false
         });
     }
 
@@ -80,15 +81,38 @@ function renderBoard() {
             } else if (cell.adjacentMines > 0) {
                 cellElement.textContent = cell.adjacentMines;
             }
+        } else if (cell.flagged) {
+            cellElement.textContent = '🚩';
         }
-        cellElement.addEventListener('click', () => revealCell(index));
+
+        let pressTimer;
+        cellElement.addEventListener('mousedown', () => {
+            pressTimer = setTimeout(() => {
+                flagCell(index);
+            }, 500);
+        });
+        
+        cellElement.addEventListener('mouseup', () => {
+            clearTimeout(pressTimer);
+        });
+
+        cellElement.addEventListener('mouseleave', () => {
+            clearTimeout(pressTimer);
+        });
+
+        cellElement.addEventListener('click', () => {
+            if (!cell.flagged) {
+                revealCell(index);
+            }
+        });
+
         boardElement.appendChild(cellElement);
     });
 }
 
 function revealCell(index) {
     const cell = board[index];
-    if (cell.revealed) return;
+    if (cell.revealed || cell.flagged) return;
 
     cell.revealed = true;
     if (cell.isMine) {
@@ -116,7 +140,7 @@ function revealConnectedSafeCells(index) {
             const neighbors = getNeighbors(current);
             neighbors.forEach(neighbor => {
                 const neighborCell = board[neighbor];
-                if (!neighborCell.revealed && !neighborCell.isMine) {
+                if (!neighborCell.revealed && !neighborCell.isMine && !neighborCell.flagged) {
                     stack.push(neighbor);
                 }
             });
@@ -139,6 +163,14 @@ function checkWinCondition() {
         renderBoard();
         setTimeout(() => alert('Winner!'), 300);
     }
+}
+
+function flagCell(index) {
+    const cell = board[index];
+    if (cell.revealed) return;
+    
+    cell.flagged = !cell.flagged;
+    renderBoard();
 }
 
 document.getElementById('game-settings').addEventListener('submit', (event) => {
