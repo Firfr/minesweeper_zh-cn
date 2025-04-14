@@ -86,36 +86,51 @@ function renderBoard() {
         }
 
         let pressTimer;
+        let wasLongPress = false;
+    
         cellElement.addEventListener('mousedown', () => {
             pressTimer = setTimeout(() => {
                 flagCell(index);
+                wasLongPress = true;
             }, 500);
         });
-
+    
+        cellElement.addEventListener('mouseup', () => {
+            clearTimeout(pressTimer);
+            if (!wasLongPress) {
+                revealCell(index);
+            }
+            wasLongPress = false;
+        });
+    
+        cellElement.addEventListener('mouseleave', () => {
+            clearTimeout(pressTimer);
+            wasLongPress = false;
+        });
+    
         cellElement.addEventListener('touchstart', (e) => {
             e.preventDefault();
             pressTimer = setTimeout(() => {
                 flagCell(index);
+                wasLongPress = true;
             }, 500);
         });
-        
-        cellElement.addEventListener('mouseup', () => {
-            clearTimeout(pressTimer);
-        });
-
-        cellElement.addEventListener('mouseleave', () => {
-            clearTimeout(pressTimer);
-        });
-
+    
         cellElement.addEventListener('touchend', () => {
             clearTimeout(pressTimer);
+            if (!wasLongPress) {
+                revealCell(index);
+            }
+            wasLongPress = false;
         });
     
         cellElement.addEventListener('touchmove', () => {
             clearTimeout(pressTimer);
+            wasLongPress = false;
         });
-
-        cellElement.addEventListener('click', () => {
+    
+        cellElement.addEventListener('click', (e) => {
+            e.preventDefault();
             if (!cell.flagged) {
                 revealCell(index);
             }
