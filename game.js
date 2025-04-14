@@ -91,12 +91,27 @@ function renderBoard() {
                 flagCell(index);
             }, 500);
         });
+
+        cellElement.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            pressTimer = setTimeout(() => {
+                flagCell(index);
+            }, 500);
+        });
         
         cellElement.addEventListener('mouseup', () => {
             clearTimeout(pressTimer);
         });
 
         cellElement.addEventListener('mouseleave', () => {
+            clearTimeout(pressTimer);
+        });
+
+        cellElement.addEventListener('touchend', () => {
+            clearTimeout(pressTimer);
+        });
+    
+        cellElement.addEventListener('touchmove', () => {
             clearTimeout(pressTimer);
         });
 
