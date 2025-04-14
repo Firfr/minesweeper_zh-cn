@@ -87,12 +87,17 @@ function renderBoard() {
 
         let pressTimer;
         let wasLongPress = false;
+        let startX, startY;
+    
+        const longPressTime = 500;
     
         cellElement.addEventListener('mousedown', () => {
             pressTimer = setTimeout(() => {
-                flagCell(index);
-                wasLongPress = true;
-            }, 500);
+                if (!cell.revealed) {
+                    flagCell(index);
+                    wasLongPress = true;
+                }
+            }, longPressTime);
         });
     
         cellElement.addEventListener('mouseup', () => {
@@ -109,11 +114,14 @@ function renderBoard() {
         });
     
         cellElement.addEventListener('touchstart', (e) => {
-            e.preventDefault();
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
             pressTimer = setTimeout(() => {
-                flagCell(index);
-                wasLongPress = true;
-            }, 500);
+                if (!cell.revealed) {
+                    flagCell(index);
+                    wasLongPress = true;
+                }
+            }, longPressTime);
         });
     
         cellElement.addEventListener('touchend', () => {
@@ -124,9 +132,13 @@ function renderBoard() {
             wasLongPress = false;
         });
     
-        cellElement.addEventListener('touchmove', () => {
-            clearTimeout(pressTimer);
-            wasLongPress = false;
+        cellElement.addEventListener('touchmove', (e) => {
+            const moveX = e.touches[0].clientX;
+            const moveY = e.touches[0].clientY;
+            if (Math.abs(moveX - startX) > 10 || Math.abs(moveY - startY) > 10) {
+                clearTimeout(pressTimer);
+                wasLongPress = false;
+            }
         });
     
         cellElement.addEventListener('click', (e) => {
