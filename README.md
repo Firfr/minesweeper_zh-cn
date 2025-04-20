@@ -7,7 +7,7 @@ Welcome to Minesweeper! This project is a browser-based implementation of the cl
 
 当前汉化仅适用于 版本：
 
-首先感谢原作者的开源。[原项目地址]()
+首先感谢原作者的开源。[原项目地址](https://github.com/freeopensourcegames/minesweeper)
 
 具体汉化了那些内容，请参考[翻译说明](./翻译说明.md)。
 
