@@ -160,7 +160,7 @@ function revealCell(index) {
     if (cell.isMine) {
         revealAllMines();
         renderBoard();
-        setTimeout(() => alert('Game Over!'), 300);
+        setTimeout(() => alert('游戏结束！'), 300);
     } else {
         if (cell.adjacentMines === 0) {
             revealConnectedSafeCells(index);
@@ -203,7 +203,7 @@ function checkWinCondition() {
 
     if (allSafeCellsRevealed) {
         renderBoard();
-        setTimeout(() => alert('Winner!'), 300);
+        setTimeout(() => alert('游戏胜利！'), 300);
     }
 }
 
